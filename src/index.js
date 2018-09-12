@@ -53,6 +53,7 @@ export default class RNPickerSelect extends PureComponent {
             value: PropTypes.any,
         }),
         hideDoneBar: PropTypes.bool,
+        hideArrows: PropTypes.bool,
         hideIcon: PropTypes.bool,
         disabled: PropTypes.bool,
         value: PropTypes.any, // eslint-disable-line react/forbid-prop-types
@@ -73,6 +74,7 @@ export default class RNPickerSelect extends PureComponent {
             value: null,
         },
         hideDoneBar: false,
+        hideArrows: false,
         hideIcon: false,
         disabled: false,
         value: undefined,
@@ -196,6 +198,52 @@ export default class RNPickerSelect extends PureComponent {
         });
     }
 
+    renderArrows() {
+      if (this.props.hideArrows) {
+        return (
+          <View style={{ flex: 1, flexDirection: 'row', marginLeft: 15 }} />
+        );
+      }
+
+      return (
+        <View style={{ flex: 1, flexDirection: 'row', marginLeft: 15 }}>
+            <TouchableOpacity
+                activeOpacity={this.props.onUpArrow ? 0.5 : 1}
+                onPress={this.props.onUpArrow ? this.onUpArrow : null}
+            >
+                <View
+                    style={[
+                        styles.chevron,
+                        this.props.style.chevron,
+                        styles.chevronUp,
+                        this.props.style.chevronUp,
+                        this.props.onUpArrow
+                            ? [styles.chevronActive, this.props.style.chevronActive]
+                            : {},
+                    ]}
+                />
+            </TouchableOpacity>
+            <View style={{ marginHorizontal: 10 }} />
+            <TouchableOpacity
+                activeOpacity={this.props.onDownArrow ? 0.5 : 1}
+                onPress={this.props.onDownArrow ? this.onDownArrow : null}
+            >
+                <View
+                    style={[
+                        styles.chevron,
+                        this.props.style.chevron,
+                        styles.chevronDown,
+                        this.props.style.chevronDown,
+                        this.props.onDownArrow
+                            ? [styles.chevronActive, this.props.style.chevronActive]
+                            : {},
+                    ]}
+                />
+            </TouchableOpacity>
+        </View>
+      );
+    }
+
     renderDoneBar() {
         if (this.props.hideDoneBar) {
             return null;
@@ -203,41 +251,7 @@ export default class RNPickerSelect extends PureComponent {
 
         return (
             <View style={[styles.modalViewMiddle, this.props.style.modalViewMiddle]}>
-                <View style={{ flex: 1, flexDirection: 'row', marginLeft: 15 }}>
-                    <TouchableOpacity
-                        activeOpacity={this.props.onUpArrow ? 0.5 : 1}
-                        onPress={this.props.onUpArrow ? this.onUpArrow : null}
-                    >
-                        <View
-                            style={[
-                                styles.chevron,
-                                this.props.style.chevron,
-                                styles.chevronUp,
-                                this.props.style.chevronUp,
-                                this.props.onUpArrow
-                                    ? [styles.chevronActive, this.props.style.chevronActive]
-                                    : {},
-                            ]}
-                        />
-                    </TouchableOpacity>
-                    <View style={{ marginHorizontal: 10 }} />
-                    <TouchableOpacity
-                        activeOpacity={this.props.onDownArrow ? 0.5 : 1}
-                        onPress={this.props.onDownArrow ? this.onDownArrow : null}
-                    >
-                        <View
-                            style={[
-                                styles.chevron,
-                                this.props.style.chevron,
-                                styles.chevronDown,
-                                this.props.style.chevronDown,
-                                this.props.onDownArrow
-                                    ? [styles.chevronActive, this.props.style.chevronActive]
-                                    : {},
-                            ]}
-                        />
-                    </TouchableOpacity>
-                </View>
+                { this.renderArrows() }
                 <TouchableWithoutFeedback
                     onPress={() => {
                         this.togglePicker(true);
